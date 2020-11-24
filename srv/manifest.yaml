@@ -1,0 +1,4 @@
+---
+applications:
+- name: mtsjava-srv
+  path: target/mtsjava-exec.jar
