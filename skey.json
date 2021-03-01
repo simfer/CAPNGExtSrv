@@ -1,0 +1,23 @@
+{
+ "apiurl": "https://api.authentication.eu10.hana.ondemand.com",
+ "appName": "mtsjava-e4e45564trial-dev",
+ "appUrls": "{\"getDependencies\":\"https://e4e45564trial-dev-mtsjava-srv.cfapps.eu10.hana.ondemand.com/mt/v1.0/subscriptions/dependencies\",\"onSubscription\":\"https://e4e45564trial-dev-mtsjava-srv.cfapps.eu10.hana.ondemand.com/mt/v1.0/subscriptions/tenants/{tenantId}\",\"onSubscriptionAsync\":false,\"onUnSubscriptionAsync\":false,\"callbackTimeoutMillis\":0}",
+ "category": "Service_Only",
+ "clientid": "sb-mtsjava-e4e45564trial-dev-clone!b64266|lps-registry-broker!b14",
+ "clientsecret": "8e74ad9a-58f9-4352-acfe-c137b15689cc$0yoqNDhZW5p3eWFoe5SXLsNu0s20zjiO9izCjIPk928=",
+ "description": "This is just a simple service",
+ "display_name": "Just a simple service",
+ "identityzone": "e4e45564trial",
+ "identityzoneid": "140353ed-a482-412f-8555-bd84a6f0bd12",
+ "saas_registry_url": "https://saas-manager.cfapps.eu10.hana.ondemand.com",
+ "sburl": "https://internal-xsuaa.authentication.eu10.hana.ondemand.com",
+ "subaccountid": "140353ed-a482-412f-8555-bd84a6f0bd12",
+ "tenant_onboarding_url": "https://saas-manager.cfapps.eu10.hana.ondemand.com",
+ "tenantid": "140353ed-a482-412f-8555-bd84a6f0bd12",
+ "tenantmode": "dedicated",
+ "uaadomain": "authentication.eu10.hana.ondemand.com",
+ "url": "https://e4e45564trial.authentication.eu10.hana.ondemand.com",
+ "verificationkey": "-----BEGIN PUBLIC KEY-----MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuywsqcalN8FXEOUXwNvhqF2SQA0iJnegF51Q1fvvG0S3BtA6BjS29/3iTe/iwmPIh92sdnoNQyaGd1OeEqDlLJsKTUmmqDnGk4++5mZSF6q5+4JEwXEZIBjogamHikqrepWetuV5e+jr+woc1uKu3Z4TAR69uqixxTNtwJvW2RWKXJz1yoBlFkRppRLQqDnHcrKdavOuTP3lUDBkcop8IEHXTwPkQ00O4JfD6CA/aYdxQGxwapteqqUHVXGzyaYYbJEdAVAbg/nyBUYbNPWjdibUz13FyVPFenE/XZnIy6dQzh2u+hSO1EntVSaYnlwSdav1O4o9nMbwdAoHymf5CwIDAQAB-----END PUBLIC KEY-----",
+ "xsappname": "mtsjava-e4e45564trial-dev",
+ "zoneid": "140353ed-a482-412f-8555-bd84a6f0bd12"
+}

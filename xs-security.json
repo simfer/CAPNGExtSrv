@@ -1,7 +1,30 @@
 {
     "xsappname": "mtsjava",
-    "tenant-mode": "dedicated",
-    "scopes": [],
-    "attributes": [],
-    "role-templates": []
+    "tenant-mode": "shared",
+    "description": "Security profile of called application",
+    "scopes": [{
+            "name": "uaa.user",
+            "description": "UAA"
+        }, {
+            "name": "$XSAPPNAME.mtcallback",
+            "description": "Multi Tenancy Callback Access",
+            "grant-as-authority-to-apps": [
+                "$XSAPPNAME(application, sap-provisioning, tenant-onboarding)"
+            ]
+        },
+        {
+            "name": "$XSAPPNAME.mtdeployment",
+            "description": "Scope to trigger a re-deployment of the database artifacts"
+        }
+    ],
+    "authorities": [
+        "$XSAPPNAME.mtdeployment"
+    ],
+    "role-templates": [{
+        "name": "Token_Exchange",
+        "description": "UAA",
+        "scope-references": [
+            "uaa.user"
+        ]
+    }]
 }

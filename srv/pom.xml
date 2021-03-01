@@ -35,6 +35,7 @@
 			<artifactId>cds-starter-cloudfoundry</artifactId>
 		</dependency>
 
+		<!-- ADDED BY ME -->
 		<dependency>
 			<groupId>com.sap.cloud.sdk.datamodel</groupId>
 			<artifactId>odata-core</artifactId>

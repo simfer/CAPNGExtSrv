@@ -14,13 +14,13 @@
 
 		<!-- DEPENDENCIES VERSION -->
 		<jdk.version>1.8</jdk.version>
-		<cds.services.version>1.10.0</cds.services.version>
-		<spring.boot.version>2.3.3.RELEASE</spring.boot.version>
+		<cds.services.version>1.13.0</cds.services.version>
+		<spring.boot.version>2.4.1</spring.boot.version>
 
 		<cdsdk.version>^3</cdsdk.version>
-		<node.version>v12.16.1</node.version>
+		<node.version>v12.16.2</node.version>
 		<node.url>https://nodejs.org/dist/</node.url>
-		<cloudsdk.version>3.32.0</cloudsdk.version>
+		<cloudsdk.version>3.37.0</cloudsdk.version>
 	</properties>
 
 	<modules>

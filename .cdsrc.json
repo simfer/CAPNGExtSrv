@@ -1,6 +1,15 @@
 {
     "build": {
-        "target": "."
+        "target": ".",
+        "tasks": [{
+                "for": "java-cf"
+            },
+            {
+                "for": "mtx",
+                "src": ".",
+                "dest": "mtx-sidecar"
+            }
+        ]
     },
     "odata": {
         "version": "v4"

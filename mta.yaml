@@ -2,65 +2,119 @@
 ## appName = mtsjava
 ## language=java; multiTenant=false
 ## approuter=
-_schema-version: '3.1'
+_schema-version: "3.1"
 ID: mtsjava
 version: 1.0.0-SNAPSHOT
 description: "mtsjava application"
 parameters:
   enable-parallel-deployments: true
-   
+
 build-parameters:
   before-all:
-   - builder: custom
-     commands:
-      - npm install --production
-      - npx -p @sap/cds-dk cds build --production
+    - builder: custom
+      commands:
+        - npm install --production
+        - npx -p @sap/cds-dk cds build --production
 
 modules:
- # --------------------- SERVER MODULE ------------------------
- - name: mtsjava-srv
- # ------------------------------------------------------------
-   type: java
-   path: srv
-   build-parameters:
-     builder: custom
-     commands: [ mvn clean package ]
-     build-result: "target/*.[wj]ar"
-   requires:
-    # Resources extracted from CAP configuration
-    - name: uaa-mtsjava
-    - name: dest-mtsjava
-    - name: conn-mtsjava
-   provides:
-    - name: srv-api      # required by consumers of CAP services (e.g. approuter)
-      properties:
-        srv-url: ${default-url}
-
-
+  # --------------------- SERVER MODULE ------------------------
+  - name: mtsjava-srv
+    # ------------------------------------------------------------
+    type: java
+    path: srv
+    parameters:
+      memory: 1024M
+      disk-quota: 256M
+      buildpack: sap_java_buildpack
+    properties:
+      SPRING_PROFILES_ACTIVE: cloud
+      CDS_MULTITENANCY_APPUI_TENANTSEPARATOR: "-"
+    build-parameters:
+      builder: custom
+      commands: [mvn clean package]
+      build-result: "target/*.[wj]ar"
+    requires:
+      - name: sm-mtsjava
+      - name: uaa-mtsjava
+      - name: saas-mtsjava
+      - name: sidecar
+        properties:
+          CDS_MULTITENANCY_SIDECAR_URL: ~{url}
+      - name: dest-mtsjava
+      - name: conn-mtsjava
+    provides:
+      - name: srv-url # required by consumers of CAP services (e.g. approuter)
+        properties:
+          url: ${default-url}
+  # ------------------------------------------------------------
+  - name: mtsjava-mtx
+    # ------------------------------------------------------------
+    type: nodejs
+    path: mtx-sidecar
+    parameters:
+      memory: 256M
+      disk-quota: 512M
+    requires:
+      - name: uaa-mtsjava
+      - name: sm-mtsjava
+    provides:
+      - name: sidecar
+        properties:
+          url: ${default-url}
 
 resources:
+  # --------------------- XSUAA Service ------------------------
+  - name: uaa-mtsjava
+    # ------------------------------------------------------------
+    type: org.cloudfoundry.managed-service
+    parameters:
+      path: ./xs-security.json
+      service-plan: broker
+      service: xsuaa
+      config: # override xsappname in cds-security.json, xsappname needs to be unique
+        xsappname: mtsjava-${org}-${space}
 
-# --------------------- XSUAA Service ------------------------
- - name: uaa-mtsjava
-# ------------------------------------------------------------
-   type: org.cloudfoundry.managed-service
-   parameters:
-     path: ./xs-security.json
-     service-plan: application
-     service: xsuaa
-        
-# ------------------------------------------------------------
- - name: dest-mtsjava
-# ------------------------------------------------------------
-   type: org.cloudfoundry.managed-service
-   parameters:
-     service-plan: lite
-     service: destination
-    
-# ------------------------------------------------------------
- - name: conn-mtsjava
-# ------------------------------------------------------------
-   type: org.cloudfoundry.managed-service
-   parameters:
-     service-plan: lite
-     service: connectivity
+  # ------------------------------------------------------------
+  - name: dest-mtsjava
+    # ------------------------------------------------------------
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service-plan: lite
+      service: destination
+
+  # ------------------------------------------------------------
+  - name: conn-mtsjava
+    # ------------------------------------------------------------
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service-plan: lite
+      service: connectivity
+
+  # ------------------------------------------------------------
+  - name: sm-mtsjava
+    # ------------------------------------------------------------
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: service-manager
+      service-plan: container
+
+
+  # ------------------------------------------------------------
+  - name: saas-mtsjava
+    # ------------------------------------------------------------
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: saas-registry
+      service-plan: application
+      service-name: saas-mtsjava
+      config:
+        appName: mtsjava-${org}-${space}
+        xsappname: mtsjava-${org}-${space} # this is the value from xsuaa.parameters.config.xsappname
+        appUrls:
+          getDependencies: ~{srv-url/url}/mt/v1.0/subscriptions/dependencies
+          onSubscription: ~{srv-url/url}/mt/v1.0/subscriptions/tenants/{tenantId}
+        category: Service_Only
+        description: This is just a simple service
+        displayName: Just a simple service
+    requires:
+      - name: srv-url
